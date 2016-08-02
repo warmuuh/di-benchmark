@@ -1,6 +1,8 @@
 package com.greenlaw110.di_benchmark;
 
 import com.google.inject.Injector;
+import com.greenlaw110.di_benchmark.hardwire.Module;
+
 import dagger.ObjectGraph;
 import org.codejargon.feather.Feather;
 import org.osgl.inject.Genie;
@@ -22,6 +24,8 @@ public class RuntimeBenchmark {
         ObjectGraph dagger = dagger();
         MutablePicoContainer pico = pico();
         Genie genie = genie();
+        Module hardwire = new Module();
+        hardwire.start();
         ApplicationContext spring = spring(false);
         for (int i = 0; i < warmup; ++i) {
             feather.instance(A.class);
@@ -30,6 +34,7 @@ public class RuntimeBenchmark {
             pico.getComponent(A.class);
             dagger.get(A.class);
             spring.getBean(A.class);
+            hardwire.getA();
         }
         StopWatch.millis("Guice", () -> {
             for (int i = 0; i < iterations; ++i) {
@@ -54,6 +59,11 @@ public class RuntimeBenchmark {
         StopWatch.millis("Pico", () -> {
             for (int i = 0; i < iterations; ++i) {
                 pico.getComponent(A.class);
+            }
+        });
+        StopWatch.millis("Hardwire", () -> {
+            for (int i = 0; i < iterations; ++i) {
+            	hardwire.getA();
             }
         });
         if (iterations < 500 * 1000) {

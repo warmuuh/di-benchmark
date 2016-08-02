@@ -8,6 +8,7 @@ This project benchmark the following DI solutions:
 * [Dagger](https://github.com/square/dagger) - 1.2.5
 * [Pico](http://picocontainer.com/) - 2.15
 * [Spring](http://projects.spring.io/spring-framework/) - 4.3.2.RELEASE
+* [Hardwire](https://github.com/warmuuh/hardwire) - 0.2.0
 
 ## Object Graph
 
@@ -33,12 +34,12 @@ Benchmark Starting up DI containers & instantiating a dependency graph performan
 Starting up DI containers & instantiating a dependency graph 4999 times:
 ---------------------------------------------------------------------------------------
 Spring scan: enabled
-   Guice|  1921ms
- Feather|   120ms
-  Dagger|   269ms
-    Pico|   743ms
-   Genie|   416ms
-  Spring| 43535ms
+   Guice|  2906ms
+ Feather|   202ms
+  Dagger|   420ms
+    Pico|  1100ms
+   Genie|   752ms
+Hardwire|    11ms
 ```
 
 **Note**
@@ -53,12 +54,13 @@ Benchmark runtime performance: fetching bean for 500K times, with 1K times warm 
 ```text
 Runtime benchmark, fetch bean for 499999 times:
 --------------------------------------------------
-   Guice|   719ms
- Feather|   284ms
-  Dagger|   146ms
-   Genie|   177ms
-    Pico|  2057ms
-  Spring| 22024ms
+   Guice|   155ms
+ Feather|    54ms
+  Dagger|    18ms
+   Genie|    16ms
+    Pico|   255ms
+Hardwire|     1ms
+  Spring|  1610ms
 ```
 
 ## How to run the benchmark
@@ -135,12 +137,12 @@ Spring scan: disabled
 Split Starting up DI containers & instantiating a dependency graph 4999 times:
 ---------------------------------------------------------------------------------------
 Spring scan: disabled
-   Guice| start:   929ms   fetch:  1655ms
- Feather| start:    15ms   fetch:   173ms
-  Dagger| start:   133ms   fetch:   333ms
-    Pico| start:   385ms   fetch:   477ms
-   Genie| start:   594ms   fetch:   333ms
-  Spring| start: 26284ms   fetch:  2156ms
+   Guice| start:  1020ms   fetch:  1890ms
+ Feather| start:    12ms   fetch:   279ms
+  Dagger| start:   206ms   fetch:   558ms
+    Pico| start:   878ms   fetch:   884ms
+   Genie| start:   686ms   fetch:   533ms
+Hardwire| start:    11ms   fetch:     1ms
 ```
 
 The result shows we can roughly say Spring's container startup speed nearly doubled without package scanning but it is still a way slower than other products. Even though you don't get the performance gain by free, you have to manually construct your object graph and that immediately decrease the usability of Spring.

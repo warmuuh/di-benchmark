@@ -2,6 +2,8 @@ package com.greenlaw110.di_benchmark;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.greenlaw110.di_benchmark.hardwire.Module;
+
 import dagger.ObjectGraph;
 import org.codejargon.feather.Feather;
 import org.osgl.inject.Genie;
@@ -72,6 +74,17 @@ public class SplitStartupBenchmark {
                 long ms2 = System.currentTimeMillis();
                 start.addAndGet(ms2 - ms);
                 genie.get(A.class);
+                fetch.addAndGet(System.currentTimeMillis() - ms2);
+            }
+        });
+        StopWatch.startAndFetch("Hardwire", (start, fetch) -> {
+            for (int i = 0; i < iterations; ++i) {
+                long ms = System.currentTimeMillis();
+                Module m = new Module();
+                m.start();
+                long ms2 = System.currentTimeMillis();
+                start.addAndGet(ms2 - ms);
+                m.getA();
                 fetch.addAndGet(System.currentTimeMillis() - ms2);
             }
         });
